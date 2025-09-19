@@ -1,0 +1,140 @@
+﻿<Window x:Class="StreamingAppCMS.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:StreamingAppCMS"
+        xmlns:notifications="clr-namespace:Notification.Wpf.Controls;assembly=Notification.Wpf"
+        mc:Ignorable="d"
+        WindowStyle="None" 
+        Height="700" Width="1000" 
+        WindowStartupLocation="CenterScreen" 
+        ResizeMode="CanMinimize" 
+        Icon="/Assets/Images/IconStream.ico"
+        AllowsTransparency="True" 
+        Background="Transparent"
+        FontFamily="Inter">
+    
+    <Window.Resources>
+        <!-- Minimize Button Style -->
+        <Style x:Key="MinimizeButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Border" Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="#4A4A4A"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <!-- Close Button Style -->
+        <Style x:Key="CloseButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Border" CornerRadius="0,10,0,0" Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="#E81123"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Border CornerRadius="10" Background="#FF1E1E1E" BorderBrush="#FF4A4A4A" BorderThickness="1" ClipToBounds="True" SnapsToDevicePixels="True">
+        <Grid>
+            <!-- NotificationArea  -->
+            <notifications:NotificationArea
+                x:Name="WindowNotificationArea"
+                Panel.ZIndex="1000"
+                MaxItems="2"
+                Position="TopRight"
+                Margin="0,50,10,0"
+                IsHitTestVisible="True" />
+
+            <!-- Children Grid For Every Element -->
+            <Grid>
+                <Grid.RowDefinitions>
+                    <!-- Toolbar -->
+                    <RowDefinition Height="Auto"/>
+                    <!-- Content -->
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- Toolbar -->
+                <Border Grid.Row="0" Background="#FF2D2D30" Height="40" VerticalAlignment="Top" MouseDown="Toolbar_MouseDown" CornerRadius="10,10,0,0">
+                    <DockPanel LastChildFill="True">
+
+                        <!-- App Icon -->
+                        <Image Source="/Assets/Images/IconStream.ico" Width="20" Height="20" Margin="10,0,5,0" VerticalAlignment="Center" />
+
+                        <!-- App Title -->
+                        <TextBlock Text="Streaming Applications" 
+                                   Foreground="White"
+                                   VerticalAlignment="Center" 
+                                   FontWeight="Bold"
+                                   FontSize="15" Margin="5,0,0,0" />
+
+                        <!-- Elements -->
+                        <DockPanel DockPanel.Dock="Right" HorizontalAlignment="Right">
+
+                            <!-- Minimize Button -->
+                            <Button Width="40" 
+                                    Click="Minimize_Click" 
+                                    Style="{StaticResource MinimizeButtonStyle}">
+                                <TextBlock Text="—" 
+                                           FontSize="14" 
+                                           HorizontalAlignment="Center" 
+                                           VerticalAlignment="Center"/>
+                                <Button.ToolTip>
+                                    <ToolTip Content="Minimize"/>
+                                </Button.ToolTip>
+                            </Button>
+
+                            <!-- Close Button -->
+                            <Button Width="40" 
+                                    Click="Close_Click" 
+                                    Style="{StaticResource CloseButtonStyle}">
+                                <TextBlock Text="✕" 
+                                           FontSize="14" 
+                                           HorizontalAlignment="Center" 
+                                           VerticalAlignment="Center"/>
+                                <Button.ToolTip>
+                                    <ToolTip Content="Exit"/>
+                                </Button.ToolTip>
+                            </Button>
+
+                        </DockPanel>
+                    </DockPanel>
+                </Border>
+
+                <!-- Frame -->
+                <Frame x:Name="MainFrame" 
+                       Grid.Row="1" NavigationUIVisibility="Hidden" 
+                       Source="/Pages/LoginPage.xaml"/>
+            </Grid>
+        </Grid>
+    </Border>
+</Window>
